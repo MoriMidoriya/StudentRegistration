@@ -15,10 +15,6 @@ This project is a simple web-based application for registering student details a
    - Allows users to fetch and view the list of all registered students.
    - Displays the data in a table format.
 
-3. **Dynamic Interaction**:
-   - Toggles between registration form and the students list.
-   - Automatically hides the success message after 2 seconds.
-
 ---
 
 ## Prerequisites
