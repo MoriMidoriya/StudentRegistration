@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fdfd96; /* Light yellow */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure full height but with space adjustments */
+            padding: 20px 0; /* Add space above and below */
+            box-sizing: border-box; /* Include padding in total height calculation */
+        }
+        
+        #container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 400px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0; /* Ensure space between container and screen edges */
+            max-height: calc(100vh - 40px); /* Prevent overflowing beyond screen height */
+            overflow-y: auto; /* Add scroll if content overflows */
+        }
+
+        #details {
+            display: block;
+        }
+
+        #students-container {
+            display: none;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+            color: #555;
+        }
+
+        input {
+            width: 98%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #d8f5d8; /* Light green */
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #007bff;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .register-btn {
+            background-color: #28a745;
+        }
+
+        .show-btn {
+            background-color: #007bff;
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .students-table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .students-table th, .students-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .students-table th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div id="details">
+            <h1>Register Student</h1>
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter name">
+
+            <label for="reg_number">Register Number</label>
+            <input type="text" id="reg_number" placeholder="Enter register number">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter email">
+
+            <label for="mobile">Mobile</label>
+            <input type="text" id="mobile" placeholder="Enter mobile number">
+
+            <label for="location">Location</label>
+            <input type="text" id="location" placeholder="Enter location">
+
+            <div class="buttons">
+                <button class="register-btn" onclick="registerStudent()">Register</button>
+                <button class="show-btn" onclick="showStudents()">Show Registered Students</button>
+            </div>
+        </div>
+
+        <div id="message" class="message"></div>
+        <div id="students-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const nameInput = document.getElementById("name");
+            const registerNumberInput = document.getElementById("reg_number");
+            const emailInput = document.getElementById("email");
+            const mobileInput = document.getElementById("mobile");
+            const locationInput = document.getElementById("location");
+            const registerBtn = document.querySelector(".register-btn");
+    
+            nameInput.addEventListener("input", validateForm);
+            registerNumberInput.addEventListener("input", validateForm);
+            emailInput.addEventListener("input", validateForm);
+            mobileInput.addEventListener("input", validateForm);
+            locationInput.addEventListener("input", validateForm);
+    
+            function validateForm() {
+                const isValid = validateName() && 
+                              validateRegisterNumber() && 
+                              validateEmail() && 
+                              validateMobile() && 
+                              validateLocation();
+                
+                registerBtn.disabled = !isValid;
+                return isValid;
+            }
+    
+            function validateName() {
+                const value = nameInput.value.trim();
+                const isValid = value.length >= 2;
+                applyValidationStyles(nameInput, isValid);
+                return isValid;
+            }
+    
+            function validateRegisterNumber() {
+                const value = registerNumberInput.value.trim();
+                const regex = /^CB\.EN\.U4AIE21(0[0-7][1-6]|10[1-9]|1[1-7][0-9])$/;
+                const isValid = regex.test(value);
+                applyValidationStyles(registerNumberInput, isValid);
+                return isValid;
+            }
+    
+            function validateMobile() {
+                const value = mobileInput.value.trim();
+                const regex = /^(91)?[6-9]\d{9}$/;
+                const isValid = regex.test(value);
+                applyValidationStyles(mobileInput, isValid);
+                return isValid;
+            }
+    
+            function validateEmail() {
+                const value = emailInput.value.trim();
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const isValid = regex.test(value) && value.endsWith(".com");
+                applyValidationStyles(emailInput, isValid);
+                return isValid;
+            }
+    
+            function validateLocation() {
+                const value = locationInput.value.trim();
+                const isValid = value.length >= 2;
+                applyValidationStyles(locationInput, isValid);
+                return isValid;
+            }
+    
+            function applyValidationStyles(input, isValid) {
+                input.style.borderColor = isValid ? "#28a745" : "#dc3545";
+            }
+    
+            window.registerStudent = function() {
+                if (!validateForm()) {
+                    const messageEl = document.getElementById("message");
+                    messageEl.textContent = "Please correct all errors before submitting.";
+                    messageEl.className = "message error";
+                    return;
+                }
+    
+                const name = nameInput.value;
+                const reg_number = registerNumberInput.value;
+                const email = emailInput.value;
+                const mobile = mobileInput.value;
+                const location = locationInput.value;
+    
+                fetch("/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ name, reg_number, email, mobile, location })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const messageEl = document.getElementById("message");
+                    if (data.message) {
+                        messageEl.textContent = data.message;
+                        messageEl.className = "message success";
+                        [nameInput, registerNumberInput, emailInput, mobileInput, locationInput].forEach(
+                            input => input.style.borderColor = "#ccc"
+                        );
+                        document.getElementById("name").value = "";
+                        document.getElementById("reg_number").value = "";
+                        document.getElementById("email").value = "";
+                        document.getElementById("mobile").value = "";
+                        document.getElementById("location").value = "";
+                    } else {
+                        messageEl.textContent = "Error: " + data.error;
+                        messageEl.className = "message error";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    const messageEl = document.getElementById("message");
+                    messageEl.textContent = "An error occurred while registering.";
+                    messageEl.className = "message error";
+                });
+            }
+        });
+    </script>
+    <script>
+        window.showStudents = function() {
+            fetch("/students")
+                .then(response => response.json())
+                .then(data => {
+                    const studentsContainer = document.getElementById("students-container");
+                    const students = data.students;
+                    if (students.length > 0) {
+                        let tableHtml = `<table class="students-table">
+                            <tr>
+                                <th>Name</th>
+                                <th>Register Number</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Location</th>
+                            </tr>`;
+                        students.forEach(student => {
+                            tableHtml += `<tr>
+                                <td>${student.name}</td>
+                                <td>${student.reg_number}</td>
+                                <td>${student.email}</td>
+                                <td>${student.mobile}</td>
+                                <td>${student.location}</td>
+                            </tr>`;
+                        });
+                        tableHtml += `</table>`;
+                        studentsContainer.innerHTML = tableHtml;
+                        document.getElementById("container").style.width="850px"
+                        document.getElementById("details").style.display="none"
+                        document.getElementById("students-container").style.display="block"
+                    } else {
+                        studentsContainer.innerHTML = "<p>No students registered yet.</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching students:", error);
+                    const studentsContainer = document.getElementById("students-container");
+                    studentsContainer.innerHTML = "<p class='error'>Error loading students data.</p>";
+                });
+        }
+    </script>
+</body>
+</html>
