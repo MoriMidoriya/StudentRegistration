@@ -25,5 +25,39 @@ This project is a simple web-based application for registering student details a
 
 ---
 
-## File Structure
 
+---
+
+## How to Run
+
+1. **Set Up the Environment**:
+   - Ensure Python is installed on your machine.
+   - Install Flask using pip:
+     ```bash
+     pip install flask
+     ```
+
+2. **Run the Flask Server**:
+   - Open a terminal in the directory containing `app.py`.
+   - Start the server:
+     ```bash
+     python app.py
+     ```
+   - By default, the Flask server will run at `http://127.0.0.1:5000`.
+
+3. **Open the Application**:
+   - Open a web browser and go to:
+     ```
+     http://127.0.0.1:5000
+     ```
+
+4. **Use the App**:
+   - Fill in the form fields to register a student.
+   - Click "Register" to save the details.
+   - Click "Show Registered Students" to view the list of all registered students.
+
+---
+
+## License
+
+This project is open-source and available for personal or educational use.
